@@ -2,10 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.contrib.auth.models import User, Group
-from api.quickstart.models import Todo
 from rest_framework import viewsets
 from rest_framework import permissions
-from api.quickstart.serializers import UserSerializer, GroupSerializer, TodoSerializer
+from api.quickstart.serializers import UserSerializer, GroupSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,10 +24,3 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
     
-class TodoViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows Todos to be viewed or edited.
-    """
-    queryset = Todo.objects.all()
-    serializer_class = TodoSerializer
-    permission_classes = [permissions.IsAuthenticated]
