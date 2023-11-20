@@ -7,7 +7,6 @@ const HELLA_HARDCODED_TOKEN = '4b520c29d3e7a62e621640540b866cd97d1c0ed2'
 
 const options = {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
-    mode: "no-cors", // no-cors, *cors, same-origin
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
     headers: {
       "Content-Type": "application/json",
@@ -36,3 +35,5 @@ export default apiClient
 
 
 // curl -H 'Accept: application/json; indent=4' -u ek:12345 http://127.0.0.1:8000/todo/api
+
+// curl -X GET http://127.0.0.1:8000/todos/api -H 'Authorization: Token 4b520c29d3e7a62e621640540b866cd97d1c0ed2'

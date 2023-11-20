@@ -106,5 +106,3 @@ class TodoDetailApiView(APIView):
         )  
         
         
-        
-        # curl -X GET http://127.0.0.1:8000/todos/api -H 'Authorization: Token 4b520c29d3e7a62e621640540b866cd97d1c0ed2'
