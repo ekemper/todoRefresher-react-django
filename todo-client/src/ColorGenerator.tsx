@@ -1,5 +1,5 @@
 
-import { createContext, useContext } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 interface IColorContext {
     color: string,
@@ -15,4 +15,31 @@ const ColorContext = createContext<IColorContext>(defaultState);
 
 const useColor = () => useContext(ColorContext)
 
-export { ColorContext, useColor };
+interface ColorProviderProps {
+    children: ReactNode
+}
+
+const ColorProvider = ({children}: ColorProviderProps) => {
+
+  const [color, setColor] = useState<string>(defaultState.color);
+
+  const getNewColor = () => {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return setColor(color);
+  }
+
+  setInterval(() => getNewColor(), 10000)
+
+  return (
+    <ColorContext.Provider value={{ color, getNewColor }}>
+        {children}
+    </ColorContext.Provider>
+  )
+}
+
+
+export { ColorProvider, useColor };
