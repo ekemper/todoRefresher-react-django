@@ -1,14 +1,9 @@
 import { FC } from "react"
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import apiClient from "./apiClient"
 import CoolDot from "./CoolDot"
 
-const LoadingIndicator: FC = () => {
-    return <div>LOADING...</div>
-}
-
 const TodoList: FC = () => {
-    const queryClient = useQueryClient()
 
     const { isPending, isError, data, error } = useQuery({
         queryKey: ['todos'],
@@ -19,7 +14,7 @@ const TodoList: FC = () => {
         <div>
             {
                 isPending
-                    ? <LoadingIndicator />
+                    ? <div>LOADING...</div>
                     : <pre className='todo-list'>{JSON.stringify(data, null, 4)}</pre>
             }
 

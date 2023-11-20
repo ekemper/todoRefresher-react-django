@@ -5,7 +5,7 @@
 const HELLA_HARDCODED_TOKEN = '4b520c29d3e7a62e621640540b866cd97d1c0ed2'
 
 
-const options = {
+const defaultOptions = {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
     cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
     headers: {
@@ -14,21 +14,23 @@ const options = {
     }
 } as RequestInit // TODO : WTF?
 
+const todoApiUrl = `http://localhost:8000/todos/api`
+
 const apiClient = {
     fetchTodoList: async () => {
-        const response = await fetch('http://localhost:8000/todos/api', options)
+        const response = await fetch(todoApiUrl, defaultOptions)
         if (!response.ok) {
             throw new Error('Network response was not ok')
         }
         return response.json()
     },
-    // createTodo: async (newTodo: any) => {
-    //     const response = await fetch('/todos/api')
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok')
-    //     }
-    //     return response.json()  
-    // }
+    createTodo: async (newTodo: any) => {
+        const response = await fetch(todoApiUrl, {method: 'POST', body: newTodo, ...defaultOptions})
+        if (!response.ok) {
+            throw new Error('Network response was not ok')
+        }
+        return response.json()  
+    }
 }
 
 export default apiClient

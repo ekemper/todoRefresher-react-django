@@ -1,5 +1,5 @@
 
-import React, { FC, createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 
 interface IColorContext {
     color: string,
@@ -12,10 +12,6 @@ export const defaultState = {
 }
 
 const ColorContext = createContext<IColorContext>(defaultState);
-
-type ColorProviderProps = {
-    children: React.ReactNode
-}
 
 const useColor = () => useContext(ColorContext)
 
