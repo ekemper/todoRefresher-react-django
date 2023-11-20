@@ -7,12 +7,12 @@ from rest_framework import status
 from rest_framework import permissions
 from .models import Todo
 from .serializers import TodoSerializer
+from rest_framework.authtoken.models import Token
 
 class TodoListApiView(APIView):
     # add permission to check if user is authenticated
     permission_classes = [permissions.IsAuthenticated]
 
-    # 1. List all
     def get(self, request, *args, **kwargs):
         '''
         List all the todo items for given requested user
@@ -21,7 +21,6 @@ class TodoListApiView(APIView):
         serializer = TodoSerializer(todos, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # 2. Create
     def post(self, request, *args, **kwargs):
         '''
         Create the Todo with given todo data
@@ -40,7 +39,6 @@ class TodoListApiView(APIView):
     
 
 class TodoDetailApiView(APIView):
-# add permission to check if user is authenticated
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self, todo_id, user_id):
@@ -52,8 +50,11 @@ class TodoDetailApiView(APIView):
         except Todo.DoesNotExist:
             return None
 
-    # 3. Retrieve
     def get(self, request, todo_id, *args, **kwargs):
+        try:
+           token = Token.objects.get(user=request.user)
+        except Token.DoesNotExist:
+           return Response({'error': 'Token does not exist'}, status=401)
         '''
         Retrieves the Todo with given todo_id
         '''
@@ -67,7 +68,6 @@ class TodoDetailApiView(APIView):
         serializer = TodoSerializer(todo_instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # 4. Update
     def put(self, request, todo_id, *args, **kwargs):
         '''
         Updates the todo item with given todo_id if exists
@@ -89,7 +89,6 @@ class TodoDetailApiView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # 5. Delete
     def delete(self, request, todo_id, *args, **kwargs):
         '''
         Deletes the todo item with given todo_id if exists
@@ -105,3 +104,7 @@ class TodoDetailApiView(APIView):
             {"res": "Object deleted!"},
             status=status.HTTP_200_OK
         )  
+        
+        
+        
+        # curl -X GET http://127.0.0.1:8000/todos/api -H 'Authorization: Token 4b520c29d3e7a62e621640540b866cd97d1c0ed2'

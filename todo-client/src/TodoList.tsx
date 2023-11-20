@@ -1,9 +1,30 @@
-import { FC, useState } from "react"
+import { FC } from "react"
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import apiClient from "./apiClient"
+
+const LoadingIndicator: FC = () => {
+    return <div>LOADING...</div>
+}
 
 const TodoList: FC = () => {
-    const [todos, setTodos] = useState({'todos': 'not yet :)'})
+    const queryClient = useQueryClient()
 
-    return(<pre className='todo-list'>{JSON.stringify(todos, null, 4)}</pre>)
+    const { isPending, isError, data, error } = useQuery({
+        queryKey: ['todos'],
+        queryFn: apiClient.fetchTodoList,
+    })
+
+    return (
+        <div>
+            {
+                isPending
+                    ? <LoadingIndicator />
+                    : <pre className='todo-list'>{JSON.stringify(data, null, 4)}</pre>
+            }
+
+            {isError ? <pre>{JSON.stringify(error)}</pre> : <></>}
+        </div>
+    )
 }
 
 export default TodoList
